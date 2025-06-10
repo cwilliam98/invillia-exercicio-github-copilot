@@ -18,13 +18,30 @@ document.addEventListener("DOMContentLoaded", () => {
         const activityCard = document.createElement("div");
         activityCard.className = "activity-card";
 
-        const spotsLeft = details.max_participants - details.participants.length;
+        const spotsLeft =
+          details.max_participants - details.participants.length;
+
+        // Monta a lista de participantes (ou mensagem caso não haja)
+        let participantsHtml = "";
+        if (details.participants.length > 0) {
+          participantsHtml = `
+            <p><strong>Participantes inscritos:</strong></p>
+            <ul>
+              ${details.participants
+                .map((email) => `<li>${email}</li>`)
+                .join("")}
+            </ul>
+          `;
+        } else {
+          participantsHtml = `<p><em>Nenhum participante inscrito ainda.</em></p>`;
+        }
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          ${participantsHtml}
         `;
 
         activitiesList.appendChild(activityCard);
@@ -36,7 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
         activitySelect.appendChild(option);
       });
     } catch (error) {
-      activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";
+      activitiesList.innerHTML =
+        "<p>Failed to load activities. Please try again later.</p>";
       console.error("Error fetching activities:", error);
     }
   }
@@ -50,7 +68,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(
-        `/activities/${encodeURIComponent(activity)}/signup?email=${encodeURIComponent(email)}`,
+        `/activities/${encodeURIComponent(
+          activity
+        )}/signup?email=${encodeURIComponent(email)}`,
         {
           method: "POST",
         }
