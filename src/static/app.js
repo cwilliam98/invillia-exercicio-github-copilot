@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let participantsHtml = "";
         if (details.participants.length > 0) {
           participantsHtml = `
-            <p><strong>Participantes inscritos:</strong></p>
+            <span class="participants-title">Participantes inscritos:</span>
             <ul>
               ${details.participants
                 .map((email) => `<li>${email}</li>`)
